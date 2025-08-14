@@ -22,7 +22,7 @@ Inspired by fxhash, this library is designed as a simple snippet that can be inc
 ### Installation
   Load the library via CDN by adding the script tag to your HTML:
   ```html
-  <script src="https://ipfs.bitmark.com/ipfs/QmRfJutL1FyAKqT2vAAPErgcJqTfCyWvQtnbiShZhTkNL4" type="text/javascript"></script>
+  <script src="https://ipfs.feralfile.com/ipfs/Qmc4zwYthfKRNMgoMJN16DEyjoxmZmjikLBzA1yVB7reDr" type="text/javascript"></script>
   ```
 
   The script attaches a global:
@@ -33,7 +33,7 @@ Inspired by fxhash, this library is designed as a simple snippet that can be inc
 ### Quickstart
   ```html
   <head>
-    <script src="https://ipfs.bitmark.com/ipfs/QmRfJutL1FyAKqT2vAAPErgcJqTfCyWvQtnbiShZhTkNL4" type="text/javascript"></script>
+    <script src="https://ipfs.feralfile.com/ipfs/Qmc4zwYthfKRNMgoMJN16DEyjoxmZmjikLBzA1yVB7reDr" type="text/javascript"></script>
   </head>
   <body>
     <script>
@@ -41,15 +41,23 @@ Inspired by fxhash, this library is designed as a simple snippet that can be inc
       window.addEventListener('feralfile:provenance-ready', (e) => {
         console.log('Provenance:', e.detail.provenances);
       });
-      
+
       window.addEventListener('feralfile:blockchain-info-ready', (e) => {
         console.log('Block height:', e.detail.height);
       });
-      
+
+       window.addEventListener('feralfile:provenance-request-error', (e) => {
+        console.log('Provenance request error:', e.detail.error);
+      });
+
+      window.addEventListener('feralfile:blockchain-info-request-error', (e) => {
+        console.log('Blockchain info request error:', e.detail.error);
+      });
+
       // Load data, Kick off requests:
       FeralFile.loadProvenance();
       FeralFile.loadBlockchainInfo();
-      
+
       // Get variables and deterministic random number
       console.log(FeralFile.getVariables());
       console.log(FeralFile.random());
@@ -83,16 +91,22 @@ Inspired by fxhash, this library is designed as a simple snippet that can be inc
 
 ### Functions
   - `FeralFile.loadProvenance()`: void
-    - Dispatches 'feralfile:provenance-ready' or 'feralfile:provenance-request-error'
+    - Dispatches `feralfile:provenance-ready` or `feralfile:provenance-request-error`
   - `FeralFile.loadBlockchainInfo()`: void
-    - Dispatches 'feralfile:blockchain-info-ready' or 'feralfile:blockchain-info-request-error'
+    - Dispatches `feralfile:blockchain-info-ready` or `feralfile:blockchain-info-request-error`
   - `FeralFile.random()`: number
     - Returns a deterministic random number seeded by token_id
   - `FeralFile.getVariables()`: object
-    - Returns configuration variables {
-      blockchain: string, contract: string, tokenID: string,
-      editionNumber: number, artworkNumber: number
+    - Returns configuration variables
+    ```js
+    {
+      blockchain: string,
+      contract: string,
+      tokenID: string,
+      editionNumber: number,
+      artworkNumber: number
     }
+    ```
 
 ### Events
 The SDK emits DOM events on window:
@@ -115,6 +129,7 @@ To access parsed values:
 ```js
 const vars = FeralFile.getVariables();
 ```
+
 ### Deterministic Randomness
 To provide randomness to generative artworks, we offer a random function based on sfc32. The function takes token_id (passed as a URL parameter) as the seed of the randomness. This ensures that the randomness is deterministic. If the token_id is not given, the snippet will create a random one so you can test locally.
 
@@ -136,7 +151,7 @@ Use `FeralFile.random()` to get a deterministic random value in [0,1), seeded by
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)  
 This project is licensed under the [MIT License](./LICENSE).
 
-## Attribution
+### Attribution
 
 Copyright (c) 2025 Feral File  
 See the LICENSE file for details.
