@@ -19,15 +19,15 @@
  *     window.addEventListener('feralfile:provenance-ready', (e) => {
  *       console.log('Provenance:', e.detail.provenances);
  *     });
- *     
+ *
  *     window.addEventListener('feralfile:blockchain-info-ready', (e) => {
  *       console.log('Block height:', e.detail.height);
  *     });
- *     
+ *
  *     // Load data
  *     FeralFile.loadProvenance();
  *     FeralFile.loadBlockchainInfo();
- *     
+ *
  *     // Get variables and deterministic random number
  *     console.log(FeralFile.getVariables());
  *     console.log(FeralFile.random());
@@ -60,7 +60,7 @@
  * License: MIT
  */
 
-(function (global) {
+(function(global) {
   'use strict';
 
   /**
@@ -81,17 +81,17 @@
 
   /**
    * Get blockchain alias for API usage.
-   * @param {string} blockchain
+   * @param {string} blockchainType
    * @returns {string}
    */
-  function blockchainAlias(blockchain) {
-    switch (blockchain) {
-      case 'tezos':
-        return 'tez';
-      case 'ethereum':
-        return 'eth';
-      default:
-        return 'eth';
+  function blockchainAlias(blockchainType) {
+    switch (blockchainType) {
+    case 'tezos':
+      return 'tez';
+    case 'ethereum':
+      return 'eth';
+    default:
+      return 'eth';
     }
   }
 
@@ -103,19 +103,19 @@
    * @returns {Promise<any>}
    */
   function simpleHTTPRequest(url, method, body) {
-    return new Promise(function (resolve, reject) {
+    return new Promise(function(resolve, reject) {
       const xhr = new XMLHttpRequest();
       xhr.open(method, url);
       const xhrParams = body ? JSON.stringify(body) : null;
       if (xhrParams) {
         xhr.setRequestHeader('content-type', 'application/json');
       }
-      xhr.onreadystatechange = function () {
+      xhr.onreadystatechange = function() {
         if (xhr.readyState === 4) {
           if (xhr.status >= 200 && xhr.status < 400) {
             try {
               resolve(JSON.parse(xhr.responseText));
-            } catch (e) {
+            } catch {
               reject(new Error('Invalid JSON response'));
             }
           } else {
@@ -123,7 +123,7 @@
           }
         }
       };
-      xhr.onerror = function (e) {
+      xhr.onerror = function(e) {
         reject(e);
       };
       xhr.send(xhrParams);
@@ -141,7 +141,7 @@
       blockchain,
       contract,
       tokenID,
-    }
+    };
   }
 
   /**
@@ -162,7 +162,7 @@
     const reqBody = { ids: [indexID] };
 
     simpleHTTPRequest(url, 'POST', reqBody)
-      .then(function (data) {
+      .then(function(data) {
         if (!Array.isArray(data) || data.length === 0) {
           global.dispatchEvent(new CustomEvent('feralfile:provenance-request-error', {
             detail: { error: new Error('token not found') }
@@ -173,7 +173,7 @@
           detail: { provenances: data[0].provenance }
         }));
       })
-      .catch(function (error) {
+      .catch(function(error) {
         global.dispatchEvent(new CustomEvent('feralfile:provenance-request-error', {
           detail: { error }
         }));
@@ -187,12 +187,12 @@
    */
   function loadBlockchainInfo() {
     simpleHTTPRequest('https://api.blockcypher.com/v1/eth/main', 'GET')
-      .then(function (data) {
+      .then(function(data) {
         global.dispatchEvent(new CustomEvent('feralfile:blockchain-info-ready', {
           detail: { height: data.height }
         }));
       })
-      .catch(function (error) {
+      .catch(function(error) {
         global.dispatchEvent(new CustomEvent('feralfile:blockchain-info-request-error', {
           detail: { error }
         }));
@@ -208,7 +208,7 @@
    */
   function cyrb128(str) {
     let h1 = 1779033703, h2 = 3144134277,
-        h3 = 1013904242, h4 = 2773480762;
+      h3 = 1013904242, h4 = 2773480762;
     for (let i = 0, k; i < str.length; i++) {
       k = str.charCodeAt(i);
       h1 = (h2 ^ Math.imul(h1 ^ k, 597399067)) | 0;
@@ -220,7 +220,7 @@
     h2 = Math.imul(h4 ^ (h2 >>> 22), 2869860233) | 0;
     h3 = Math.imul(h1 ^ (h3 >>> 17), 951274213) | 0;
     h4 = Math.imul(h2 ^ (h4 >>> 19), 2716044179) | 0;
-    return [(h1^h2^h3^h4) >>> 0, h2>>>0, h3>>>0, h4>>>0];
+    return [(h1 ^ h2 ^ h3 ^ h4) >>> 0, h2 >>> 0, h3 >>> 0, h4 >>> 0];
   }
 
   /**
@@ -233,7 +233,7 @@
    */
   function sfc32(a, b, c, d) {
     return function() {
-      a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0; 
+      a >>>= 0; b >>>= 0; c >>>= 0; d >>>= 0;
       var t = (a + b | 0) + d | 0;
       d = d + 1 | 0;
       a = b ^ b >>> 9;
@@ -241,7 +241,7 @@
       c = (c << 21 | c >>> 11);
       c = c + t | 0;
       return (t >>> 0) / 4294967296;
-    }
+    };
   }
 
   // Create seed and random function

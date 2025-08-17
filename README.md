@@ -17,7 +17,7 @@ Inspired by fxhash, this library is designed as a simple snippet that can be inc
 - [Deterministic Randomness](#deterministic-randomness)
 - [Network Endpoints](#network-endpoints)
 - [Notes](#notes)
-- [License](#license-mit)
+- [License](#license)
 
 ### Installation
   Load the library via CDN by adding the script tag to your HTML:
