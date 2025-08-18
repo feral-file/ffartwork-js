@@ -1,4 +1,8 @@
 # FeralFile Artwork JS Library
+
+[![CI](https://img.shields.io/github/actions/workflow/status/feral-file/ffa-js/lint-ci.yml)](https://github.com/feral-file/ffa-js/actions/workflows/lint-ci.yml)
+[![codecov](https://codecov.io/gh/feral-file/ffa-js/branch/main/graph/badge.svg)](https://codecov.io/gh/feral-file/ffa-js)
+
 -----------------------------------
 A lightweight, dependency-free JavaScript library for software artworks on Feral File, enabling software artwork developers to create variants by integrating this library.
 Inspired by fxhash, this library is designed as a simple snippet that can be included at the top of generative artworks.
