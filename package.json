@@ -11,7 +11,7 @@
     "LICENSE"
   ],
   "scripts": {
-    "build": "esbuild src/index.js --bundle --format=iife --global-name=FeralFile --sourcemap --outfile=dist/artwork_lib.iife.js && esbuild src/index.js --bundle --format=iife --global-name=FeralFile --minify --sourcemap --outfile=dist/artwork_lib.min.js",
+    "build": "esbuild src/index.js --bundle --format=iife --sourcemap --outfile=dist/artwork_lib.iife.js && esbuild src/index.js --bundle --format=iife --minify --sourcemap --outfile=dist/artwork_lib.min.js",
     "lint": "eslint src/**/*.js",
     "lint:fix": "eslint src/**/*.js --fix",
     "clean": "rm -rf dist/",
