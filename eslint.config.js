@@ -39,5 +39,20 @@ export default [
       'indent': ['error', 2],
       'no-trailing-spaces': 'error'
     }
+  },
+  {
+    files: ['tests/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2021,
+      sourceType: 'module',
+      globals: {
+        setTimeout: 'readonly',
+        URL: 'readonly',
+        globalThis: 'readonly'
+      }
+    },
+    rules: {
+      'no-unused-vars': ['error', { 'argsIgnorePattern': '^(ok|status)$' }]
+    }
   }
 ];
