@@ -13,4 +13,14 @@ describe("random()", () => {
     const b = await loadLibWith("https://x/?token_id=B");
     expect(a.random()).not.toBe(b.random());
   });
+
+  it("generates random token_id when token_id is not provided", async () => {
+    const lib = await loadLibWith("https://x/?blockchain=ethereum&contract=0x123");
+    const vars = lib.getVariables();
+
+    // Should have generated a token ID
+    expect(vars.tokenID).toBeDefined();
+    expect(vars.tokenID).not.toBe("");
+    expect(typeof vars.tokenID).toBe("string");
+  });
 });
